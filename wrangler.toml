@@ -1,0 +1,10 @@
+name = "ai-worker"
+main = "V4(latest)/worker.js"
+compatibility_date = "2024-05-01"
+
+# Set your Cloudflare account ID here or export CLOUDFLARE_ACCOUNT_ID
+# account_id = "YOUR_ACCOUNT_ID"
+
+[build]
+upload.format = "modules"
+
