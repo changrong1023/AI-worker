@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } else { // AI message
           if (typeof marked !== 'undefined') {
-            contentSpan.innerHTML = marked.parse(textOrParts); 
+            contentSpan.innerHTML = DOMPurify.sanitize(marked.parse(textOrParts));
           } else {
             contentSpan.textContent = textOrParts; 
           }
@@ -665,7 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       if (textPart) {
                           currentText += textPart;
                           if (typeof marked !== 'undefined') {
-                            responseContentSpan.innerHTML = marked.parse(currentText);
+                            responseContentSpan.innerHTML = DOMPurify.sanitize(marked.parse(currentText));
                           } else {
                             responseContentSpan.textContent = currentText; 
                           }
@@ -674,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
                           const blockMessage = "\\n[内容被阻止: " + chunk.promptFeedback.blockReason + "]";
                           currentText += blockMessage;
                            if (typeof marked !== 'undefined') {
-                            responseContentSpan.innerHTML = marked.parse(currentText);
+                            responseContentSpan.innerHTML = DOMPurify.sanitize(marked.parse(currentText));
                           } else {
                             responseContentSpan.textContent = currentText;
                           }
@@ -686,7 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       const parseErrorMessage = '\\n[解析数据块时出错]';
                       currentText += parseErrorMessage;
                       if (typeof marked !== 'undefined') {
-                        responseContentSpan.innerHTML = marked.parse(currentText);
+                        responseContentSpan.innerHTML = DOMPurify.sanitize(marked.parse(currentText));
                       } else {
                         responseContentSpan.textContent = currentText;
                       }
@@ -702,14 +702,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const textPart = chunk.candidates?.[0]?.content?.parts?.[0]?.text;
             if (textPart) {
                 currentText += textPart;
-                if (typeof marked !== 'undefined') { responseContentSpan.innerHTML = marked.parse(currentText); } 
+                if (typeof marked !== 'undefined') { responseContentSpan.innerHTML = DOMPurify.sanitize(marked.parse(currentText)); }
                 else { responseContentSpan.textContent = currentText; }
                 scrollToBottom();
             }
         } catch (e) {
             console.error("Error parsing final buffer:", e);
             currentText += '\\n[处理流末尾数据时出错]';
-            if (typeof marked !== 'undefined') { responseContentSpan.innerHTML = marked.parse(currentText); } 
+            if (typeof marked !== 'undefined') { responseContentSpan.innerHTML = DOMPurify.sanitize(marked.parse(currentText)); }
             else { responseContentSpan.textContent = currentText; }
             scrollToBottom();
         }
@@ -769,6 +769,7 @@ export function renderHTML() {
   <link rel="icon" href="https://www.cloudflare.com/favicon.ico" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
   ` + styles + `
 </head>
 <style>
